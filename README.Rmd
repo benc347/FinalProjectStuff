@@ -1,0 +1,94 @@
+---
+title: "README"
+author: "Ben Cortes"
+date: "November 16, 2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+
+transpose_headed_file <- function(fname) {              #transpose function for files with headers
+#  new_tib <- as.tibble()                                         #set 2nd argument as a tibble
+  tempfile <- read_tsv((paste(fname)), col_names = F)            #read tsv (1st argument), ignoring 1st row (headers) 
+  new_tib <- as.tibble(t(tempfile))                              #transpose into 2nd argument
+  names(new_tib) <- as.character(unlist(new_tib[1,]))            #turn 1st row of new tibble into column headers
+  new_tib <- new_tib[-1,]                                        #remove 1st row of new tibble
+  return(new_tib)                                                   
+}
+
+tran_tomatosnps <- transpose_headed_file("tomatoSNPs.txt")      #call function on snp file
+
+```
+```{r}
+
+colnames(tran_tomatosnps)[1] <- "Sample" 
+tran_tomatosnps <- mutate(tran_tomatosnps, NA_count = rowSums(is.na(tran_tomatosnps)))
+head(tran_tomatosnps)
+tran_tomatosnps[1010]
+
+```
+
+```{r}
+for (i in 1:nrow(test)) {
+  if (((test[i, "NA_count"]) >= (0.1 * 1009)) != TRUE & FALSE) {
+    print(i)
+  }
+}
+```
+
+
+```{r}
+test <- tran_tomatosnps
+x = 0
+for (i in 1:nrow(test)) {
+  if ((test[i, "NA_count"]) >= (0.1 * 1009)) {
+
+    }
+    #test <- test[-c(i), ] } 
+    #options(error=dump.frames)
+}
+print(x)
+```
+```{r}
+test2 <- test[-c(59, 54 , 6, 45, 47), ]
+```
+
+
+
+```{r}
+remove_missing_data <- function(fname) {
+#dataframe to cull = fname
+
+for (i in 2:ncol(fname)) {
+#iterate through all columns of dataframe
+  
+  for (j in nrow(fname)){
+    #while in the ith column, iterate through the rows
+    
+    if(fname[j,i] == "") {
+      #if the jth row of the ith column is blank
+      
+      count + 1
+      
+      
+      
+    #if the first row, or if the column value isn't the same as the previous one
+      
+    write_tsv(fname[i,], paste(prefix, fname[i,cnum], suffix, sep = ""))
+    #create a dataframe named with the current (ith) row named("prefix, current column
+    #value, suffix")  
+    
+    } else {
+        write_tsv(fname[i,], paste(prefix, fname[i,cnum], suffix, sep = ""), append = T)
+    #otherwise, append ith row to current dataframe
+      
+    }
+  }
+}
+}
+```
+
